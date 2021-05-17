@@ -7,9 +7,10 @@
 require './price_calculator_logic.rb'
 
 def run(products)
-  items = break_into_array(ask_for_items)
-  cart = quantify(items)
-  receipt = checkout(products, cart)
+  input = PriceCalculatorLogic.ask_for_items
+  items = PriceCalculatorLogic.break_into_array(input)
+  cart = PriceCalculatorLogic.quantify(items)
+  receipt = PriceCalculatorLogic.checkout(products, cart)
 
   print_table(receipt)
 end
