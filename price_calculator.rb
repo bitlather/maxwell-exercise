@@ -2,7 +2,7 @@
 # Usage:
 #------------------------------------------------------------------------------
 # $ ruby price_calculator.rb
-# $ ruby price_calculator.rb "Milk, milk,BREAD,eggs"
+# $ ruby price_calculator.rb items="Milk, milk,BREAD,eggs"
 #==============================================================================
 require 'pp'
 
@@ -11,29 +11,33 @@ def run(products)
   cart = quantify(items)
   receipt = checkout(products, cart)
 
-  puts "CART:"
-  pp cart
-  puts
-  puts "PRODUCTS:"
-  pp products
-  puts
-  puts "RECEIPT:"
-  pp receipt
-  puts
-
   print_table(receipt)
 end
 
+def get_command_line_argument(key)
+
+  ARGV.each do |arg|
+    return arg[key.length, arg.length - key.length] if arg.start_with?(key)
+  end
+
+  nil
+end
+
 def ask_for_items
+
   puts
   puts "Please enter all the items purchased separated by a comma"
-  if ARGV.length == 0
+  input = get_command_line_argument('items=')
+
+  if input.nil?
+    # Ask user to input items if they did not pass it through command line.
     input = STDIN.gets.chomp
   else
-    input = ARGV[0]
+    # Simply print the items if user passed them through command line argument.
     puts input
   end
   puts
+
   input
 end
 
