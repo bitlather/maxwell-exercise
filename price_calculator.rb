@@ -4,6 +4,18 @@
 # $ ruby price_calculator.rb
 # $ ruby price_calculator.rb "Milk, milk,BREAD"
 #==============================================================================
+require 'pp'
+
+def run(products)
+  items = break_into_array(ask_for_items)
+  cart = quantify(items)
+
+  puts "CART:"
+  pp cart
+  puts
+  puts "PRODUCTS:"
+  pp products
+end
 
 def ask_for_items
   puts
@@ -36,8 +48,29 @@ def quantify(items)
   result
 end
 
-items = break_into_array(ask_for_items)
-cart = quantify(items)
-
-require 'pp'
-pp cart
+run({
+  apple: {
+    name: 'Apple',
+    price: 0.89
+  },
+  banana: {
+    name: 'Banana',
+    price: 0.99
+  },
+  bread: {
+    name: 'Bread',
+    price: 2.17,
+    sale: {
+      quantity: 3,
+      price: 6.00
+    }
+  },
+  milk: {
+    name: 'Milk',
+    price: 3.97,
+    sale: {
+      quantity: 2,
+      price: 5.00
+    }
+  }
+})
