@@ -1,3 +1,10 @@
+#==============================================================================
+# Usage:
+#------------------------------------------------------------------------------
+# $ ruby price_calculator.rb
+# $ ruby price_calculator.rb "milk, milk,bread"
+#==============================================================================
+
 def ask_for_items
   puts
   puts "Please enter all the items purchased separated by a comma"
@@ -11,4 +18,15 @@ def ask_for_items
   input
 end
 
-items = ask_for_items
+def break_into_array(input)
+  items = input.split(",")
+  items.each do |item|
+    item.strip!
+    item.downcase!
+  end
+  items
+end
+
+items = break_into_array(ask_for_items)
+
+puts items
