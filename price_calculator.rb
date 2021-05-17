@@ -2,7 +2,7 @@
 # Usage:
 #------------------------------------------------------------------------------
 # $ ruby price_calculator.rb
-# $ ruby price_calculator.rb "milk, milk,bread"
+# $ ruby price_calculator.rb "Milk, milk,BREAD"
 #==============================================================================
 
 def ask_for_items
@@ -27,6 +27,17 @@ def break_into_array(input)
   items
 end
 
-items = break_into_array(ask_for_items)
+def quantify(items)
+  result = {}
+  items.each do |item|
+    result[item] = 0 unless result.key? item
+    result[item] += 1
+  end
+  result
+end
 
-puts items
+items = break_into_array(ask_for_items)
+cart = quantify(items)
+
+require 'pp'
+pp cart
