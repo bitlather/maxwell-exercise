@@ -19,6 +19,9 @@ def run(products)
   puts
   puts "RECEIPT:"
   pp receipt
+  puts
+
+  print_table(receipt)
 end
 
 def ask_for_items
@@ -103,6 +106,20 @@ def checkout(products, cart)
   end
 
   receipt
+end
+
+def print_table(receipt)
+  unrecognized = []
+  printf "%-10s   %8s   %s\n", 'Item', 'Quantity', 'Price'
+  puts "-" * 35
+  receipt[:items].each do |item|
+    printf "%-10s   %8s   $%.2f\n", item[:name], item[:quantity], item[:total_discounted_price]
+  end
+
+  puts
+  printf "Total price: $%.2f\n", receipt[:total_price]
+  printf "You saved $%.2f today.\n", receipt[:total_saved]
+  puts
 end
 
 run({
