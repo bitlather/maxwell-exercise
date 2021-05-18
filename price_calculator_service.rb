@@ -1,4 +1,4 @@
-class PriceCalculatorLogic
+class PriceCalculatorService
   def self.get_command_line_argument(key)
 
     ARGV.each do |arg|

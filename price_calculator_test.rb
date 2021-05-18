@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------
 # $ ruby price_calculator_test.rb
 #==============================================================================
-require './price_calculator_logic.rb'
+require './price_calculator_service.rb'
 
 def assert(actual, expected)
   if actual == expected
@@ -17,30 +17,76 @@ def assert(actual, expected)
   end
 end
 
+products = {
+  apple: {
+    name: 'Apple',
+    price: 0.89
+  },
+  banana: {
+    name: 'Banana',
+    price: 0.99
+  },
+  bread: {
+    name: 'Bread',
+    price: 2.17,
+    sale: {
+      quantity: 3,
+      price: 6.00
+    }
+  },
+  milk: {
+    name: 'Milk',
+    price: 3.97,
+    sale: {
+      quantity: 2,
+      price: 5.00
+    }
+  }
+}
+
 assert(
-  PriceCalculatorLogic.break_into_array(''),
+  PriceCalculatorService.break_into_array(''),
   []);
 
 assert(
-  PriceCalculatorLogic.break_into_array('milk,MILK,   milk    , mIlK'),
+  PriceCalculatorService.break_into_array('milk,MILK,   milk    , mIlK'),
   ["milk", "milk", "milk", "milk"]);
 
 assert(
-  PriceCalculatorLogic.break_into_array('egg sandwich'),
+  PriceCalculatorService.break_into_array('egg sandwich'),
   ["egg sandwich"]);
 
 assert(
-  PriceCalculatorLogic.quantify([]),
+  PriceCalculatorService.quantify([]),
   {})
 
 assert(
-  PriceCalculatorLogic.quantify(["milk", "milk", "milk", "milk"]),
+  PriceCalculatorService.quantify(["milk", "milk", "milk", "milk"]),
   {:milk=>4})
 
 assert(
-  PriceCalculatorLogic.quantify(["egg sandwich"]),
+  PriceCalculatorService.quantify(["egg sandwich"]),
   {:"egg sandwich"=>1})
 
 assert(
-  PriceCalculatorLogic.quantify(["milk", "milk", "bread", "banana", "bread", "bread", "egg sandwich", "milk", "apple"]),
+  PriceCalculatorService.quantify(["milk", "milk", "bread", "banana", "bread", "bread", "egg sandwich", "milk", "apple"]),
   {:milk=>3, :bread=>3, :banana=>1, :"egg sandwich"=>1, :apple=>1})
+
+
+assert(
+  PriceCalculatorService.checkout(products, {:a=>1, :milk=>4, :z=>1}),
+  {
+    :total_price=>10.0,
+    :total_saved=>5.880000000000001,
+    :items=>
+    [
+      {
+        :name=>"Milk",
+        :quantity=>4,
+        :total_price=>15.88,
+        :total_discounted_price=>10.0
+      }
+    ],
+    :unrecognized=>[:a, :z]
+  }
+)

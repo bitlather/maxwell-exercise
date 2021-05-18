@@ -4,13 +4,13 @@
 # $ ruby price_calculator.rb
 # $ ruby price_calculator.rb items="Milk, milk,BREAD,eggs"
 #==============================================================================
-require './price_calculator_logic.rb'
+require './price_calculator_service.rb'
 
 def run(products)
-  input = PriceCalculatorLogic.ask_for_items
-  items = PriceCalculatorLogic.break_into_array(input)
-  cart = PriceCalculatorLogic.quantify(items)
-  receipt = PriceCalculatorLogic.checkout(products, cart)
+  input = PriceCalculatorService.ask_for_items
+  items = PriceCalculatorService.break_into_array(input)
+  cart = PriceCalculatorService.quantify(items)
+  receipt = PriceCalculatorService.checkout(products, cart)
 
   print_table(receipt)
 end
