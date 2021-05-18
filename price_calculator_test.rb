@@ -51,15 +51,15 @@ products = {
 }
 
 assert(
-  PriceCalculatorService.break_into_array(''),
+  PriceCalculatorService.break_items_into_array(''),
   []);
 
 assert(
-  PriceCalculatorService.break_into_array('milk,MILK,   milk    , mIlK'),
+  PriceCalculatorService.break_items_into_array('milk,MILK,   milk    , mIlK'),
   ["milk", "milk", "milk", "milk"]);
 
 assert(
-  PriceCalculatorService.break_into_array('egg sandwich'),
+  PriceCalculatorService.break_items_into_array('egg sandwich'),
   ["egg sandwich"]);
 
 assert(

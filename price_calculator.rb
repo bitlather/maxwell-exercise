@@ -8,7 +8,7 @@ require './price_calculator_service.rb'
 
 def run(products)
   input = PriceCalculatorService.ask_for_items
-  items = PriceCalculatorService.break_into_array(input)
+  items = PriceCalculatorService.break_items_into_array(input)
   cart = PriceCalculatorService.quantify(items)
   receipt = PriceCalculatorService.checkout(products, cart)
 

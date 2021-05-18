@@ -18,6 +18,7 @@ Testing instructions:
 $ ruby price_calculator_test.rb
 ```
 
+
 Notes
 -----
 
@@ -32,3 +33,11 @@ I decided to store prices as cents, instead of dollars, to avoid floating point 
 The render code, `print_table()`, must format the prices. I indicated this would be an issue for the front-end by suffixing `receipt`'s keys with `_cents`. If this were an API, I'd probably keep the currencies as integers in the back-end when any calculations are performed, then format them as floating-point numbers when the response object is built.
 
 Since no points were awarded for tests, and I wanted to keep this project easy to run, I built my own `assert` function.
+
+
+Potential Improvements
+----------------------
+
+1. Use a linter, like rubocop, to make code consistent.
+
+2. Run code through `rdoc` to generate documentation. I haven't used rdoc before, so I'm not entirely sure if my documentation is correct, but I've used the `rspec_api_documentation` gem to generate HTML documentation for API endpoints through rspec.
