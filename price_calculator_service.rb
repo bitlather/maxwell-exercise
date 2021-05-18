@@ -51,9 +51,12 @@ class PriceCalculatorService
   end
 
   def self.checkout(products, cart)
+    # Two milks at $3.97 each yielded :total_saved=>2.9400000000000004, so I stored
+    # the price of everything in cents to reduce floating point issues.
+
     receipt = {
-      total_price: 0,
-      total_saved: 0,
+      total_price_cents: 0,
+      total_saved_cents: 0,
       items: [],
       unrecognized: []    
     }
@@ -69,8 +72,8 @@ class PriceCalculatorService
 
       product = products[key]
 
-      item_total_price = quantity * product[:price]
-      item_discounted_price = item_total_price
+      item_total_price_cents = quantity * product[:price_cents]
+      item_discounted_price_cents = item_total_price_cents
 
       if product.key? :sale
         num_sales_applied = (quantity / product[:sale][:quantity]).floor
@@ -78,19 +81,17 @@ class PriceCalculatorService
           ? quantity % (num_sales_applied * product[:sale][:quantity]) \
           : quantity
 
-        item_discounted_price = num_full_price * product[:price] + num_sales_applied * product[:sale][:price]
+        item_discounted_price_cents = num_full_price * product[:price_cents] + num_sales_applied * product[:sale][:price_cents]
       end
 
-      receipt[:total_price] += item_discounted_price
-      receipt[:total_saved] += (item_total_price - item_discounted_price)
-      # Note: For two milks, we get :total_saved=>2.9400000000000004, so maybe we should store
-      # the price of everything in cents to avoid floating point issues.
+      receipt[:total_price_cents] += item_discounted_price_cents
+      receipt[:total_saved_cents] += (item_total_price_cents - item_discounted_price_cents)
 
       receipt[:items].push({
         name: product[:name],
         quantity: quantity,
-        total_price: item_total_price,
-        total_discounted_price: item_discounted_price })
+        total_price_cents: item_total_price_cents,
+        total_discounted_price_cents: item_discounted_price_cents })
 
     end
 

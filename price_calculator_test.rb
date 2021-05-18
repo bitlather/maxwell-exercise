@@ -5,6 +5,7 @@
 #------------------------------------------------------------------------------
 # $ ruby price_calculator_test.rb
 #==============================================================================
+require 'pp'
 require './price_calculator_service.rb'
 
 def assert(actual, expected)
@@ -12,34 +13,39 @@ def assert(actual, expected)
     puts "pass"
   else
     puts "FAIL"
-    puts "  actual: #{actual}"
-    puts "  expected: #{expected}"
+    puts "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+    puts "actual:"
+    pp actual
+    puts "---------------------------------------"
+    puts "expected:"
+    pp expected
+    puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
   end
 end
 
 products = {
   apple: {
     name: 'Apple',
-    price: 0.89
+    price_cents: 89
   },
   banana: {
     name: 'Banana',
-    price: 0.99
+    price_cents: 99
   },
   bread: {
     name: 'Bread',
-    price: 2.17,
+    price_cents: 217,
     sale: {
       quantity: 3,
-      price: 6.00
+      price_cents: 600
     }
   },
   milk: {
     name: 'Milk',
-    price: 3.97,
+    price_cents: 397,
     sale: {
       quantity: 2,
-      price: 5.00
+      price_cents: 500
     }
   }
 }
@@ -76,17 +82,41 @@ assert(
 assert(
   PriceCalculatorService.checkout(products, {:a=>1, :milk=>4, :z=>1}),
   {
-    :total_price=>10.0,
-    :total_saved=>5.880000000000001,
+    :total_price_cents=>1000,
+    :total_saved_cents=>588,
     :items=>
     [
       {
         :name=>"Milk",
         :quantity=>4,
-        :total_price=>15.88,
-        :total_discounted_price=>10.0
+        :total_price_cents=>1588,
+        :total_discounted_price_cents=>1000
       }
     ],
     :unrecognized=>[:a, :z]
   }
+)
+
+assert(
+  PriceCalculatorService.checkout(products, {:milk=>3, :bread=>4, :banana=>1, :apple=>1}),
+  {:total_price_cents=>1902,
+   :total_saved_cents=>345,
+   :items=>
+    [{:name=>"Apple",
+      :quantity=>1,
+      :total_price_cents=>89,
+      :total_discounted_price_cents=>89},
+     {:name=>"Banana",
+      :quantity=>1,
+      :total_price_cents=>99,
+      :total_discounted_price_cents=>99},
+     {:name=>"Bread",
+      :quantity=>4,
+      :total_price_cents=>868,
+      :total_discounted_price_cents=>817},
+     {:name=>"Milk",
+      :quantity=>3,
+      :total_price_cents=>1191,
+      :total_discounted_price_cents=>897}],
+   :unrecognized=>[]}
 )

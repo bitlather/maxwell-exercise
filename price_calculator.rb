@@ -11,7 +11,9 @@ def run(products)
   items = PriceCalculatorService.break_into_array(input)
   cart = PriceCalculatorService.quantify(items)
   receipt = PriceCalculatorService.checkout(products, cart)
-
+require 'pp'
+pp cart
+pp receipt
   print_table(receipt)
 end
 
@@ -20,38 +22,38 @@ def print_table(receipt)
   printf "%-10s   %8s   %s\n", 'Item', 'Quantity', 'Price'
   puts "-" * 35
   receipt[:items].each do |item|
-    printf "%-10s   %8s   $%.2f\n", item[:name], item[:quantity], item[:total_discounted_price]
+    printf "%-10s   %8s   $%.2f\n", item[:name], item[:quantity], (item[:total_discounted_price_cents] / 100.0)
   end
 
   puts
-  printf "Total price: $%.2f\n", receipt[:total_price]
-  printf "You saved $%.2f today.\n", receipt[:total_saved]
+  printf "Total price: $%.2f\n", (receipt[:total_price_cents] / 100.0)
+  printf "You saved $%.2f today.\n", (receipt[:total_saved_cents] / 100.0)
   puts
 end
 
 run({
   apple: {
     name: 'Apple',
-    price: 0.89
+    price_cents: 89
   },
   banana: {
     name: 'Banana',
-    price: 0.99
+    price_cents: 99
   },
   bread: {
     name: 'Bread',
-    price: 2.17,
+    price_cents: 217,
     sale: {
       quantity: 3,
-      price: 6.00
+      price_cents: 600
     }
   },
   milk: {
     name: 'Milk',
-    price: 3.97,
+    price_cents: 397,
     sale: {
       quantity: 2,
-      price: 5.00
+      price_cents: 500
     }
   }
 })
