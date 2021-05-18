@@ -11,9 +11,7 @@ def run(products)
   items = PriceCalculatorService.break_into_array(input)
   cart = PriceCalculatorService.quantify(items)
   receipt = PriceCalculatorService.checkout(products, cart)
-require 'pp'
-pp cart
-pp receipt
+
   print_table(receipt)
 end
 
